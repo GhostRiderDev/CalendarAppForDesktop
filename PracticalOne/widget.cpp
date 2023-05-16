@@ -20,27 +20,31 @@ void Widget::updateCalendar(int year,int month )
 {
 
 
-    // Calcular el número de días en el mes seleccionado
+     // Nombre de la ventana
+    setWindowTitle("Calendario   O.D.J");
+
+    // Obtener el número de días en el mes y el día de la semana en que comienza
     QDate date(year, month, 1);
     int numDays = date.daysInMonth();
-
+    int dayBegin = date.dayOfWeek() - 1;
 
     // Actualizar la tabla del calendario con el número correcto de días
-    int row = 0; // Comenzar a agregar días a la segunda fila
-    int col = date.dayOfWeek() - 1;// Comenzar a agregar días en el día de la semana correcto
-    const int dayBegin=col;
+    int row = 0; // Comenzar a agregar días a la primera fila
+    int col = dayBegin;
 
-
-    for(int i=0; i<1;i++){
-        for (int  j= 0; j < dayBegin; ++j) {
-            QTableWidgetItem *item = new QTableWidgetItem;
-            item->setText("");
+    for (int i = 0; i < ui->tablecalendar->rowCount(); ++i) {
+        for (int j = 0; j < ui->tablecalendar->columnCount(); ++j) {
+            QTableWidgetItem *item = ui->tablecalendar->item(i, j);
+            if (item) {
+                delete item;
+            }
+            item = new QTableWidgetItem;
             ui->tablecalendar->setItem(i, j, item);
         }
     }
+
     for (int day = 1; day <= numDays; ++day) {
         QTableWidgetItem *item = new QTableWidgetItem;
-
         item->setText(QString::number(day));
         item->setTextAlignment(Qt::AlignCenter);
         ui->tablecalendar->setItem(row, col, item);
@@ -48,13 +52,34 @@ void Widget::updateCalendar(int year,int month )
         if (col == 0) {
             ++row; // Cambiar a la siguiente fila después de agregar una semana completa
         }
-
     }
 
+    // Rellenar las celdas vacías al final del mes con el primer día del mes siguiente
+    if (col != 0) {
+        QDate nextMonth = date.addMonths(1);
+        int daysToAdd = 7 - col;
+        for (int i = 0; i < daysToAdd; ++i) {
+            QTableWidgetItem *item = new QTableWidgetItem;
+            ui->tablecalendar->setItem(row, col, item);
+            col = (col + 1) % 7;
+            if (col == 0) {
+                ++row;
+            }
+        }
+        dayBegin = col;
+        date = nextMonth;
+        numDays = date.daysInMonth();
+    }
 
-
-
-
+    // Rellenar las celdas vacías al principio del mes con el último día del mes anterior
+    if (dayBegin != 0) {
+        QDate prevMonth = date.addMonths(-1);
+        int prevNumDays = prevMonth.daysInMonth();
+        for (int i = dayBegin - 1; i >= 0; --i) {
+            QTableWidgetItem *item = new QTableWidgetItem;
+            ui->tablecalendar->setItem(0, i, item);
+        }
+    }
 }
 
 
