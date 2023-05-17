@@ -108,7 +108,8 @@ release/qrc_res.cpp: ../PracticalOne/res.qrc \
 		../PracticalOne/menu.png \
 		../PracticalOne/icono2.png \
 		../PracticalOne/flechaAvanzar\ (1).png \
-		../PracticalOne/flechaRetroceder.png
+		../PracticalOne/flechaRetroceder.png \
+		../PracticalOne/imgDelete.png
 	D:\QT\6.5.0\mingw_64\bin\rcc.exe -name res --no-zstd ..\PracticalOne\res.qrc -o release\qrc_res.cpp
 
 compiler_moc_predefs_make_all: release/moc_predefs.h
@@ -704,7 +705,8 @@ release/widget.o: ../PracticalOne/widget.cpp ../PracticalOne/widget.h \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/qcommandlinkbutton.h \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/qabstractbutton.h \
-		../../../QT/6.5.0/mingw_64/include/QtWidgets/QFrame \
+		../../../QT/6.5.0/mingw_64/include/QtWidgets/QGroupBox \
+		../../../QT/6.5.0/mingw_64/include/QtWidgets/qgroupbox.h \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/QHeaderView \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/qheaderview.h \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/qabstractitemview.h \
@@ -717,8 +719,6 @@ release/widget.o: ../PracticalOne/widget.cpp ../PracticalOne/widget.h \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/QPushButton \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/QSpinBox \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/qspinbox.h \
-		../../../QT/6.5.0/mingw_64/include/QtWidgets/QSplitter \
-		../../../QT/6.5.0/mingw_64/include/QtWidgets/qsplitter.h \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/QTableView \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/qtableview.h \
 		../../../QT/6.5.0/mingw_64/include/QtWidgets/QTableWidget \

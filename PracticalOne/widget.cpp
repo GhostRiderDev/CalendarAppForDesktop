@@ -16,6 +16,76 @@
 #include <QFileInfo>
 
 
+
+void Widget::interfazResposive(){
+    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    setLayout(mainLayout);
+
+
+
+
+    // Ejemplo de uso de QBoxLayout para organizar elementos en una disposición horizontal
+    QHBoxLayout* buttonLayout = new QHBoxLayout;
+    buttonLayout->addWidget(ui->buttonMenu);
+    buttonLayout->addWidget(ui->buttonAtras);
+    buttonLayout->addWidget(ui->mesNow);
+    buttonLayout->addWidget(ui->labelMonth);
+    buttonLayout->addWidget(ui->spinBoxAnio);
+    buttonLayout->addWidget(ui->labelYear);
+    buttonLayout->addWidget(ui->buttonNextMonth);
+    mainLayout->addLayout(buttonLayout);
+
+
+    QHBoxLayout* btnTableLayout = new QHBoxLayout;
+    QVBoxLayout* buttonLayout2 = new QVBoxLayout;
+    buttonLayout2->addWidget(ui->crearEvento);
+    buttonLayout2->addSpacing(50);
+    buttonLayout2->addWidget(ui->ButtonDeleteEvent);
+    buttonLayout2->addStretch();
+    buttonLayout2->addSpacing(20);
+    buttonLayout2->addWidget(ui->buttonExit);
+    buttonLayout2->addStretch();
+    btnTableLayout->addLayout(buttonLayout2);
+
+
+    // Configurar tamaño mínimo y máximo para el QTableWidget
+    QHeaderView* header = ui->tablecalendar->horizontalHeader();
+    header->setMinimumSectionSize(60);
+    header->setMaximumSectionSize(100);
+    QHeaderView* headerV = ui->tablecalendar->verticalHeader();
+    headerV->setMinimumSectionSize(90);
+    headerV->setMaximumSectionSize(110);
+    header->setSectionResizeMode(QHeaderView::Stretch);
+    // Agregar el QTableWidget al QHBoxLayout
+    btnTableLayout->addWidget(ui->tablecalendar);
+
+
+    // Establecer la política de tamaño del QHBoxLayout
+    btnTableLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    mainLayout->addLayout(btnTableLayout);
+    // Establece políticas de tamaño para los elementos
+    ui->buttonAtras->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    ui->buttonNextMonth->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    ui->mesNow->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    ui->spinBoxAnio->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    ui->crearEvento->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    ui->tablecalendar->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+
+    // Establece propiedades de tamaño mínimo y máximo para los elementos
+    ui->buttonNextMonth->setMinimumSize(100, 50);
+    ui->buttonNextMonth->setMaximumSize(200, 100);
+    ui->buttonAtras->setMinimumSize(100, 50);
+    ui->buttonAtras->setMaximumSize(200, 100);
+    ui->mesNow->setMaximumSize(200,50);
+    ui->crearEvento->setMinimumSize(50,70);
+    ui->crearEvento->setMaximumSize(150,100);
+    ui->tablecalendar->setMinimumWidth(580);
+    ui->tablecalendar->setMaximumWidth(2500);
+    ui->tablecalendar->setMinimumHeight(800);
+    ui->tablecalendar->setMaximumHeight(900);
+
+
+}
 void Widget::updateCalendar(int year,int month )
 {
 
@@ -27,6 +97,7 @@ void Widget::updateCalendar(int year,int month )
     QDate date(year, month, 1);
     int numDays = date.daysInMonth();
     int dayBegin = date.dayOfWeek() - 1;
+
 
     // Actualizar la tabla del calendario con el número correcto de días
     int row = 0; // Comenzar a agregar días a la primera fila
@@ -128,13 +199,14 @@ Widget::Widget(QWidget *parent)
     m_model=new QSqlTableModel(this);
     m_model->setTable("persona");
     m_model->select();
-    ui->TableBase->setModel(m_model);
 
-
-    ui->crearEvento->setText("Agregar Evento");
+    ui->ButtonDeleteEvent->setText("Eliminar\nEvento");
+    ui->crearEvento->setText("Agregar\nEvento");
     ui->spinBoxAnio->setRange(1,999999999);
     ui->spinBoxAnio->setValue(dateNow1.getYear());
 
+
+    interfazResposive();
 
     const QString month[] = {"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre",
                              "Noviembre","Diciembre"};
@@ -149,6 +221,7 @@ Widget::Widget(QWidget *parent)
     //ui->barraSeleccionDate->setStyleSheet("background-color: blue");
 
    //ui->ListaEventos->setStyleSheet("background-color: white;  border-radius: 10px;");
+
 
 
 
