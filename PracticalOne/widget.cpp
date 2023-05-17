@@ -5,6 +5,7 @@
 #include "QMessageBox"
 #include "QDialogButtonBox"
 #include <QDate>
+#include <QDebug>
 #include <QCheckBox>
 #include "QInputDialog"
 #include <QButtonGroup>
@@ -20,7 +21,6 @@
 void Widget::interfazResposive(){
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);
-
 
 
 
@@ -90,20 +90,16 @@ void Widget::updateCalendar(int year,int month )
 {
 
 
-     // Nombre de la ventana
-    setWindowTitle("Calendario   O.D.J");
-
     // Obtener el número de días en el mes y el día de la semana en que comienza
     QDate date(year, month, 1);
     int numDays = date.daysInMonth();
     int dayBegin = date.dayOfWeek() - 1;
 
-
     // Actualizar la tabla del calendario con el número correcto de días
     int row = 0; // Comenzar a agregar días a la primera fila
     int col = dayBegin;
 
-    for (int i = 0; i < ui->tablecalendar->rowCount(); ++i) {
+    for (int i = 0; i < 7; ++i) {
         for (int j = 0; j < ui->tablecalendar->columnCount(); ++j) {
             QTableWidgetItem *item = ui->tablecalendar->item(i, j);
             if (item) {
@@ -389,6 +385,7 @@ void Widget::on_spinBoxAnio_valueChanged(int arg1)
     // Obtener el valor actual del comboBoxMes
     int monthSelect = ui->mesNow->currentIndex() + 1;
 
+
     // Actualizar el calendario con los valores actuales de ambos widgets
     updateCalendar(arg1, monthSelect);
 }
@@ -398,10 +395,10 @@ void Widget::on_buttonAtras_clicked()
 {
 
     int yearSelect = ui->spinBoxAnio->value();
-    int monthSelect = ui->mesNow->currentIndex() + 1;
+    int monthSelect = ui->mesNow->currentIndex() ;
     if(monthSelect>1){
         monthSelect--;
-        ui->mesNow->setCurrentIndex(monthSelect-1);
+        ui->mesNow->setCurrentIndex(monthSelect - 1);
         updateCalendar(yearSelect, monthSelect);
     }
 
@@ -411,10 +408,10 @@ void Widget::on_buttonAtras_clicked()
 void Widget::on_buttonNextMonth_clicked()
 {
     int yearSelect = ui->spinBoxAnio->value();
-    int monthSelect = ui->mesNow->currentIndex() + 1;
+    int monthSelect = ui->mesNow->currentIndex()+1;
     if(monthSelect<12){
-        monthSelect--;
-        ui->mesNow->setCurrentIndex(monthSelect+1);
+        monthSelect++;
+        ui->mesNow->setCurrentIndex(monthSelect-1);
         updateCalendar(yearSelect, monthSelect);
     }
 }
