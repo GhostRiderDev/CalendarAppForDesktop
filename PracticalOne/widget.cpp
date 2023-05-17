@@ -23,7 +23,6 @@ void Widget::interfazResposive(){
     setLayout(mainLayout);
 
 
-
     // Ejemplo de uso de QBoxLayout para organizar elementos en una disposición horizontal
     QHBoxLayout* buttonLayout = new QHBoxLayout;
     buttonLayout->addWidget(ui->buttonMenu);
@@ -214,12 +213,6 @@ Widget::Widget(QWidget *parent)
     ui->mesNow->setCurrentIndex((dateNow1.getMonth())-1);
     ui->mesNow->setStyleSheet("background-color: white; QComboBox::drop-down { background-color: red; }");
 
-    //ui->barraSeleccionDate->setStyleSheet("background-color: blue");
-
-   //ui->ListaEventos->setStyleSheet("background-color: white;  border-radius: 10px;");
-
-
-
 
    ui->tablecalendar->setRowCount(6);
    ui->tablecalendar->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -231,8 +224,6 @@ Widget::Widget(QWidget *parent)
    ui->tablecalendar->setHorizontalHeaderLabels(labels);
    ui->tablecalendar->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
    ui->tablecalendar->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-
 
 
 
@@ -262,27 +253,31 @@ Widget::~Widget()
 }
 
 
-
-
-
-
 //Interfaz y boton de agregar eventos
 
 void Widget::on_crearEvento_clicked()
 {
 
+
     dateNow dateNow1;
-    QMessageBox::information(this, "Mensaje", "creando un evento");
     QDialog dialog(this);
     dialog.setWindowTitle("Crear Evento");
     QVBoxLayout layout(&dialog);
+
+    // Campo del nombre del evento
+    QLineEdit evento(&dialog);
+    QFont font("Arial", 12, QFont::Bold); // Fuente Arial, tamaño 12, negrita
+    QLabel nomb("Nombre del evento", &dialog);
+    nomb.setFont(font); // Aplicar la fuente en negrita al QLabel
+    layout.addWidget(&nomb);
+    layout.addWidget(&evento);
 
     // Campo de año
     QSpinBox yearSpinBox(&dialog);
     yearSpinBox.setRange(1, 99999);
     yearSpinBox.setValue(QDate::currentDate().year());
     QLabel yearLabel("Año:", &dialog);
-        layout.addWidget(&yearLabel);
+    layout.addWidget(&yearLabel);
     layout.addWidget(&yearSpinBox);
     int year = yearSpinBox.value();
 
@@ -301,38 +296,67 @@ void Widget::on_crearEvento_clicked()
 
     // Campo de día
     QSpinBox daySpinBox(&dialog);
-    daySpinBox.setRange(1, 31);
-    daySpinBox.setValue(dateNow1.getDay());
     QLabel dayLabel("Día:", &dialog);
         layout.addWidget(&dayLabel);
     layout.addWidget(&daySpinBox);
 
-
-
+    // Conexión de señales
+    QObject::connect(&yearSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [&](int year) {
+        int month = monthComboBox.currentIndex() + 1;
+        int maxDays = QDate(year, month, 1).daysInMonth();
+        daySpinBox.setRange(1, maxDays);
+    });
+    QObject::connect(&monthComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [&](int index) {
+        int year = yearSpinBox.value();
+        int month = index + 1;
+        int maxDays = QDate(year, month, 1).daysInMonth();
+        daySpinBox.setRange(1, maxDays);
+    });
 
 
     // Campo de hora
+    QHBoxLayout hourLayout;
     QSpinBox hourSpinBox(&dialog);
     hourSpinBox.setRange(0, 12);
     hourSpinBox.setValue(QTime::currentTime().hour());
     QLabel hourLabel("Hora:", &dialog);
-    layout.addWidget(&hourLabel);
-    layout.addWidget(&hourSpinBox);
+    hourLayout.addWidget(&hourLabel);
+    hourLayout.addWidget(&hourSpinBox);
+    hourLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    hourSpinBox.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-
+    // Campo de minutos
+    QSpinBox minuteSpinBox(&dialog);
+    minuteSpinBox.setRange(0, 59);
+    minuteSpinBox.setValue(QTime::currentTime().minute());
+    QLabel minuteLabel("Minutos:", &dialog);
+    hourLayout.addWidget(&minuteLabel);
+    hourLayout.addWidget(&minuteSpinBox);
 
     QCheckBox *checkAm = new QCheckBox(nullptr);
     checkAm->setText("AM");
-    layout.addWidget(checkAm);
+    hourLayout.addWidget(checkAm);
+    checkAm->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     QCheckBox *checkPm = new QCheckBox(nullptr);
     checkPm->setText("PM");
-    layout.addWidget(checkPm);
+    hourLayout.addWidget(checkPm);
+    checkPm->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     QButtonGroup *buttonGroup = new QButtonGroup(nullptr);
     buttonGroup->addButton(checkAm);
     buttonGroup->addButton(checkPm);
     buttonGroup->setExclusive(true);
+
+    layout.addLayout(&hourLayout);
+
+    // Campo de detalles del evento
+    QLineEdit asunto(&dialog);
+    QLabel tex("Detalles del evento", &dialog);
+    tex.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    asunto.setMinimumHeight(40); // Ajusta la altura mínima del QLineEdit
+    layout.addWidget(&tex);
+    layout.addWidget(&asunto);
 
 
 
