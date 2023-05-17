@@ -32,6 +32,15 @@
     <iconset resource="res.qrc">
      <normaloff>:/new/prefix1/imgDelete.png</normaloff>:/new/prefix1/imgDelete.png</iconset>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>40</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QTableWidget" name="tablecalendar">
    <property name="geometry">

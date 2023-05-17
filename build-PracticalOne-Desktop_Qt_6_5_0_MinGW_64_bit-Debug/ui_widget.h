@@ -50,6 +50,8 @@ public:
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/new/prefix1/imgDelete.png"), QSize(), QIcon::Normal, QIcon::Off);
         ButtonDeleteEvent->setIcon(icon);
+        ButtonDeleteEvent->setIconSize(QSize(40, 40));
+        ButtonDeleteEvent->setFlat(true);
         tablecalendar = new QTableWidget(Widget);
         tablecalendar->setObjectName("tablecalendar");
         tablecalendar->setGeometry(QRect(140, 110, 581, 371));
