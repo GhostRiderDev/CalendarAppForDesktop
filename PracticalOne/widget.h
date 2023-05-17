@@ -32,6 +32,7 @@ private slots:
     void updateCalendar(int year,int month );
     void on_buttonAtras_clicked();
     void on_buttonNextMonth_clicked();
+    void interfazResposive();
 
 private:
     void populateDatabase();
