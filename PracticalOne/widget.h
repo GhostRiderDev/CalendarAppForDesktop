@@ -34,6 +34,7 @@ private slots:
     void on_buttonNextMonth_clicked();
     void interfazResposive();
 
+
 private:
     void populateDatabase();
     void insertPerson(const QString nombre, int edad, double salario)const;

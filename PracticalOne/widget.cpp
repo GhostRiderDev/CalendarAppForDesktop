@@ -19,8 +19,12 @@
 
 
 void Widget::interfazResposive(){
+
+
+
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);
+
 
 
 
@@ -34,6 +38,8 @@ void Widget::interfazResposive(){
     buttonLayout->addWidget(ui->labelYear);
     buttonLayout->addWidget(ui->buttonNextMonth);
     mainLayout->addLayout(buttonLayout);
+
+
 
 
     QHBoxLayout* btnTableLayout = new QHBoxLayout;
@@ -83,6 +89,8 @@ void Widget::interfazResposive(){
     ui->tablecalendar->setMaximumWidth(2500);
     ui->tablecalendar->setMinimumHeight(800);
     ui->tablecalendar->setMaximumHeight(900);
+
+
 
 
 }
@@ -211,6 +219,7 @@ Widget::Widget(QWidget *parent)
         ui->mesNow->addItem(month[i]);
     }
 
+
     ui->mesNow->setCurrentIndex((dateNow1.getMonth())-1);
     ui->mesNow->setStyleSheet("background-color: white; QComboBox::drop-down { background-color: red; }");
 
@@ -254,6 +263,11 @@ Widget::Widget(QWidget *parent)
    connect(ui->mesNow, SIGNAL(currentIndexChanged(int)), this, SLOT(updateCalendar()));
 
 
+
+    //Darle tamaño al primer frame de der a izq
+
+   ui->frame->setFixedHeight(1000);
+   ui->frame->setFixedWidth(140);
 }
 
 Widget::~Widget()
