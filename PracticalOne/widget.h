@@ -33,6 +33,7 @@ private slots:
     void on_buttonAtras_clicked();
     void on_buttonNextMonth_clicked();
     void interfazResposive();
+    void onAcceptButtonClicked();
 
 
 private:

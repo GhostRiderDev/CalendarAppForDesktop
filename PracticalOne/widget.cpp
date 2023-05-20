@@ -26,11 +26,7 @@ void Widget::interfazResposive(){
     setLayout(mainLayout);
 
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 297d7edc7eb08847fe8a040094b24cc2b4d9c0ff
     // Ejemplo de uso de QBoxLayout para organizar elementos en una disposición horizontal
     QHBoxLayout* buttonLayout = new QHBoxLayout;
     buttonLayout->addWidget(ui->buttonMenu);
@@ -206,6 +202,7 @@ Widget::Widget(QWidget *parent)
     m_model=new QSqlTableModel(this);
     m_model->setTable("persona");
     m_model->select();
+    ui->TableBase->setModel(m_model);
 
     ui->ButtonDeleteEvent->setText("Eliminar\nEvento");
     ui->crearEvento->setText("Agregar\nEvento");
@@ -378,12 +375,24 @@ void Widget::on_crearEvento_clicked()
 
 
 
+
     // Botones de aceptar y cancelar
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &dialog);
+    QPushButton* acceptButton = buttonBox.button(QDialogButtonBox::Ok);
+    acceptButton->setText("MiAceptar");
     layout.addWidget(&buttonBox);
 
-    // Conecta los botones aceptar y cancelar
-    QObject::connect(&buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+    // Conectar los botones aceptar y cancelar
+    QObject::connect(acceptButton, &QPushButton::clicked, [&]() {
+        int day = daySpinBox.value();
+        int month = monthComboBox.currentIndex() + 1;
+        int year = yearSpinBox.value();
+        QString nombre = evento.text();
+        QString detalles = asunto.text();
+         populateDatabase();
+        //insertEvento(nombre, day, month, year, detalles); // Insertar el evento en la base de datos
+        dialog.accept(); // Cerrar el diálogo después de insertar el evento
+    });
     QObject::connect(&buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
 
     // Muestra el diálogo y espera a que el usuario seleccione "Aceptar" o "Cancelar"
@@ -483,5 +492,10 @@ void Widget::insertPerson(const QString nombre, int edad, double salario)const{
     query.addBindValue(edad);
     query.addBindValue(salario);
     query.exec();
+}
+
+
+void Widget::onAcceptButtonClicked(){
+   populateDatabase();
 }
 

@@ -51,11 +51,12 @@ static constexpr auto qt_meta_stringdata_CLASSWidgetENDCLASS = QtMocHelpers::str
     "month",
     "on_buttonAtras_clicked",
     "on_buttonNextMonth_clicked",
-    "interfazResposive"
+    "interfazResposive",
+    "onAcceptButtonClicked"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSWidgetENDCLASS_t {
-    uint offsetsAndSizes[28];
+    uint offsetsAndSizes[30];
     char stringdata0[7];
     char stringdata1[23];
     char stringdata2[1];
@@ -70,6 +71,7 @@ struct qt_meta_stringdata_CLASSWidgetENDCLASS_t {
     char stringdata11[23];
     char stringdata12[27];
     char stringdata13[18];
+    char stringdata14[22];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSWidgetENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -88,7 +90,8 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSWidgetENDCLASS_t qt_meta_string
         QT_MOC_LITERAL(132, 5),  // "month"
         QT_MOC_LITERAL(138, 22),  // "on_buttonAtras_clicked"
         QT_MOC_LITERAL(161, 26),  // "on_buttonNextMonth_clicked"
-        QT_MOC_LITERAL(188, 17)   // "interfazResposive"
+        QT_MOC_LITERAL(188, 17),  // "interfazResposive"
+        QT_MOC_LITERAL(206, 21)   // "onAcceptButtonClicked"
     },
     "Widget",
     "on_crearEvento_clicked",
@@ -103,7 +106,8 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSWidgetENDCLASS_t qt_meta_string
     "month",
     "on_buttonAtras_clicked",
     "on_buttonNextMonth_clicked",
-    "interfazResposive"
+    "interfazResposive",
+    "onAcceptButtonClicked"
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -115,7 +119,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSWidgetENDCLASS[] = {
       11,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -123,14 +127,15 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSWidgetENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   62,    2, 0x08,    1 /* Private */,
-       3,    1,   63,    2, 0x08,    2 /* Private */,
-       5,    0,   66,    2, 0x08,    4 /* Private */,
-       6,    1,   67,    2, 0x08,    5 /* Private */,
-       8,    2,   70,    2, 0x08,    7 /* Private */,
-      11,    0,   75,    2, 0x08,   10 /* Private */,
-      12,    0,   76,    2, 0x08,   11 /* Private */,
-      13,    0,   77,    2, 0x08,   12 /* Private */,
+       1,    0,   68,    2, 0x08,    1 /* Private */,
+       3,    1,   69,    2, 0x08,    2 /* Private */,
+       5,    0,   72,    2, 0x08,    4 /* Private */,
+       6,    1,   73,    2, 0x08,    5 /* Private */,
+       8,    2,   76,    2, 0x08,    7 /* Private */,
+      11,    0,   81,    2, 0x08,   10 /* Private */,
+      12,    0,   82,    2, 0x08,   11 /* Private */,
+      13,    0,   83,    2, 0x08,   12 /* Private */,
+      14,    0,   84,    2, 0x08,   13 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -138,6 +143,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSWidgetENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    7,
     QMetaType::Void, QMetaType::Int, QMetaType::Int,    9,   10,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -173,6 +179,8 @@ Q_CONSTINIT const QMetaObject Widget::staticMetaObject = { {
         // method 'on_buttonNextMonth_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'interfazResposive'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onAcceptButtonClicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -192,6 +200,7 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 5: _t->on_buttonAtras_clicked(); break;
         case 6: _t->on_buttonNextMonth_clicked(); break;
         case 7: _t->interfazResposive(); break;
+        case 8: _t->onAcceptButtonClicked(); break;
         default: ;
         }
     }
@@ -216,13 +225,13 @@ int Widget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 9;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 9)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

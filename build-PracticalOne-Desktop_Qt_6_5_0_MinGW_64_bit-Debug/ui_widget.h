@@ -19,6 +19,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QWidget>
 
@@ -39,6 +40,7 @@ public:
     QCommandLinkButton *crearEvento;
     QPushButton *ButtonDeleteEvent;
     QPushButton *buttonExit;
+    QTableView *TableBase;
 
     void setupUi(QWidget *Widget)
     {
@@ -127,6 +129,9 @@ public:
         buttonExit = new QPushButton(frame);
         buttonExit->setObjectName("buttonExit");
         buttonExit->setGeometry(QRect(20, 530, 80, 24));
+        TableBase = new QTableView(frame);
+        TableBase->setObjectName("TableBase");
+        TableBase->setGeometry(QRect(10, 160, 256, 192));
         QWidget::setTabOrder(tablecalendar, ButtonDeleteEvent);
         QWidget::setTabOrder(ButtonDeleteEvent, mesNow);
         QWidget::setTabOrder(mesNow, spinBoxAnio);
