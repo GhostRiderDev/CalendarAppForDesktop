@@ -213,9 +213,6 @@ Widget::Widget(QWidget *parent)
     dateNow dateNow1;
     ui->setupUi(this);
     m_exists=QFileInfo("data.sqlite").exists();
-    if(m_exists==false){
-
-    }
     m_db=QSqlDatabase::addDatabase("QSQLITE");
     m_db.setDatabaseName("data.sqlite");
 
@@ -304,22 +301,31 @@ void Widget::on_crearEvento_clicked()
     dialog.setWindowTitle("Crear Evento");
     QVBoxLayout layout(&dialog);
 
+    QHBoxLayout nameEventLayout;
+
     // Campo del nombre del evento
     QLineEdit evento(&dialog);
     QFont font("Arial", 12, QFont::Bold); // Fuente Arial, tamaño 12, negrita
     QLabel nomb("Nombre del evento", &dialog);
     nomb.setFont(font); // Aplicar la fuente en negrita al QLabel
-    layout.addWidget(&nomb);
-    layout.addWidget(&evento);
+    nameEventLayout.addWidget(&nomb);
+    nameEventLayout.addWidget(&evento);
 
+    layout.addLayout(&nameEventLayout);
+
+
+
+    QHBoxLayout dateBeginEventLayout;
     // Campo de año
     QSpinBox yearSpinBox(&dialog);
     yearSpinBox.setRange(1, 99999);
     yearSpinBox.setValue(QDate::currentDate().year());
     QLabel yearLabel("Año:", &dialog);
-    layout.addWidget(&yearLabel);
-    layout.addWidget(&yearSpinBox);
+        dateBeginEventLayout.addWidget(&yearLabel);
+    dateBeginEventLayout.addWidget(&yearSpinBox);
     int year = yearSpinBox.value();
+
+
 
     // Campo de mes
     QDate DateMonth = QDate::currentDate();
@@ -330,15 +336,18 @@ void Widget::on_crearEvento_clicked()
     monthComboBox.addItems(monthList);
     QLabel monthLabel("Mes:", &dialog);
     monthComboBox.setCurrentIndex(monthNow-1);
-    layout.addWidget(&monthLabel);
-    layout.addWidget(&monthComboBox);
+    dateBeginEventLayout.addWidget(&monthLabel);
+    dateBeginEventLayout.addWidget(&monthComboBox);
     int month = monthComboBox.currentIndex();
+
 
     // Campo de día
     QSpinBox daySpinBox(&dialog);
+    daySpinBox.setRange(1,31);
     QLabel dayLabel("Día:", &dialog);
-        layout.addWidget(&dayLabel);
-    layout.addWidget(&daySpinBox);
+        dateBeginEventLayout.addWidget(&dayLabel);
+    dateBeginEventLayout.addWidget(&daySpinBox);
+    layout.addLayout(&dateBeginEventLayout);
 
     // Conexión de señales
     QObject::connect(&yearSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [&](int year) {
@@ -397,6 +406,7 @@ void Widget::on_crearEvento_clicked()
     asunto.setMinimumHeight(40); // Ajusta la altura mínima del QLineEdit
     layout.addWidget(&tex);
     layout.addWidget(&asunto);
+
 
 
 
