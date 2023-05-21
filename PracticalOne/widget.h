@@ -1,6 +1,7 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include <QDateTime>
 #include <QWidget>
 #include <QSqlDatabase>
 
@@ -33,12 +34,12 @@ private slots:
     void on_buttonAtras_clicked();
     void on_buttonNextMonth_clicked();
     void interfazResposive();
-    void onAcceptButtonClicked();
+    QDateTime transforToDateTime(int,int,int,int,int,int);
 
 
 private:
-    void populateDatabase();
-    void insertPerson(const QString nombre, int edad, double salario)const;
+    void populateDatabase(QString nombreEvento,QDateTime fechaTimeBegin, QDateTime fechaTimeEnd);
+    void insertPerson(const QString , QDateTime, QDateTime)const;
     Ui::Widget *ui;
     QSqlDatabase m_db;
     QSqlTableModel *m_model;

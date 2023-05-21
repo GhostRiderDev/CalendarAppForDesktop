@@ -267,16 +267,16 @@ font: 700 11pt &quot;Arial&quot;;</string>
      <string>Exit</string>
     </property>
    </widget>
-   <widget class="QTableView" name="TableBase">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>160</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
+  </widget>
+  <widget class="QTableView" name="TableBase">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>390</y>
+     <width>256</width>
+     <height>192</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <tabstops>

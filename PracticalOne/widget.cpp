@@ -5,6 +5,7 @@
 #include "QMessageBox"
 #include "QDialogButtonBox"
 #include <QDate>
+#include <QDateTime>
 #include <QDebug>
 #include <QCheckBox>
 #include "QInputDialog"
@@ -18,6 +19,24 @@
 
 
 
+
+QDateTime Widget::transforToDateTime(int day, int month, int year, int hh, int mm, int ss ){
+    //Hay que ver lo de AM o PM
+    // Crear una instancia de QDate con los valores de día, mes y año
+    QDate date(year, month, day);
+
+    // Crear una instancia de QTime con los valores de hora, minuto y segundo
+    QTime time(hh,mm, ss);
+
+    // Combinar la fecha y la hora para crear un QDateTime
+    QDateTime dateTime(date, time);
+
+    // Ajustar el desplazamiento horario (offset) según el valor de sHorario
+    //dateTime = dateTime.addSecs(sHorario * 3600);  // Convertir horas a segundos
+
+    return dateTime;
+
+}
 void Widget::interfazResposive(){
 
 
@@ -192,15 +211,21 @@ Widget::Widget(QWidget *parent)
 
 
     dateNow dateNow1;
-
     ui->setupUi(this);
     m_exists=QFileInfo("data.sqlite").exists();
+    if(m_exists==false){
+
+    }
     m_db=QSqlDatabase::addDatabase("QSQLITE");
     m_db.setDatabaseName("data.sqlite");
-    m_db.open();
-    populateDatabase();
+
+     m_db.open();
+
+
+    //populateDatabase("Primer", QDateTime::fromString("2023-10-17 07:59", "yyyy-MM-dd hh:mm"), QDateTime::fromString("2023-10-17 07:59", "yyyy-MM-dd hh:mm"));
+
     m_model=new QSqlTableModel(this);
-    m_model->setTable("persona");
+    m_model->setTable("Evento");
     m_model->select();
     ui->TableBase->setModel(m_model);
 
@@ -380,7 +405,12 @@ void Widget::on_crearEvento_clicked()
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &dialog);
     QPushButton* acceptButton = buttonBox.button(QDialogButtonBox::Ok);
     acceptButton->setText("MiAceptar");
+
+
+
+
     layout.addWidget(&buttonBox);
+
 
     // Conectar los botones aceptar y cancelar
     QObject::connect(acceptButton, &QPushButton::clicked, [&]() {
@@ -389,7 +419,7 @@ void Widget::on_crearEvento_clicked()
         int year = yearSpinBox.value();
         QString nombre = evento.text();
         QString detalles = asunto.text();
-         populateDatabase();
+        //populateDatabase();
         //insertEvento(nombre, day, month, year, detalles); // Insertar el evento en la base de datos
         dialog.accept(); // Cerrar el diálogo después de insertar el evento
     });
@@ -401,9 +431,14 @@ void Widget::on_crearEvento_clicked()
         int month = monthComboBox.currentIndex() + 1; // Los índices comienzan en 0
         int year = yearSpinBox.value();
         int hour = hourSpinBox.value();
+        QString nombreEvento = evento.text();
 
-        // Haz algo con los valores ingresados
-        // ...
+        QDateTime d1=transforToDateTime(day, month, year, hour, 45, 23);
+        QDateTime d2=transforToDateTime(day+1, month+2, year, hour, 45, 23);
+
+
+
+        populateDatabase(nombreEvento, d1, d2);
     }
 }
 
@@ -467,35 +502,28 @@ void Widget::on_buttonNextMonth_clicked()
     }
 }
 
-void Widget::populateDatabase(){
+void Widget::populateDatabase(QString nombreEvento,QDateTime fechaTimeBegin, QDateTime fechaTimeEnd){
     if(m_exists==false){
-        QString sql="create table if not exists persona(id integer primary key autoincrement, nombre text, edad integer, salario float)";
+        QString sql="create table if not exists Evento(id integer primary key autoincrement, nombreEvento text, fechaTimeBegin DATETIME, fechaTimeEnd DATETIME)";
         QSqlQuery query;
         query.prepare(sql);
         query.exec();
 
-        insertPerson("Carlos", 26, 477462.2);
-        insertPerson("Ana", 30, 5000.0);
-        insertPerson("Pedro", 45, 9000.0);
-        insertPerson("Luisa", 25, 6000.0);
-        insertPerson("Marta", 35, 8000.0);
-        insertPerson("Antonio", 50, 1000.0);
-
     }
+
+    insertPerson(nombreEvento, fechaTimeBegin , fechaTimeEnd);
 }
 
-void Widget::insertPerson(const QString nombre, int edad, double salario)const{
-    QString sql="insert into persona(nombre, edad, salario) values(?,?,?)";
+void Widget::insertPerson(const QString nombreEvento, QDateTime fechaTimeBegin, QDateTime fechaTimeEnd)const{
+    QString sql="insert into Evento(nombreEvento, fechaTimeBegin, fechaTimeEnd) values(?,?,?)";
     QSqlQuery query;
     query.prepare(sql);
-    query.addBindValue(nombre);
-    query.addBindValue(edad);
-    query.addBindValue(salario);
+    query.addBindValue(nombreEvento);
+    query.addBindValue(fechaTimeBegin);
+    query.addBindValue(fechaTimeEnd);
     query.exec();
 }
 
 
-void Widget::onAcceptButtonClicked(){
-   populateDatabase();
-}
+
 

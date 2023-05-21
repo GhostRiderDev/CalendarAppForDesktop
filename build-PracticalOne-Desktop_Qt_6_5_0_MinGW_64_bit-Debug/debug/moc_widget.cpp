@@ -52,7 +52,7 @@ static constexpr auto qt_meta_stringdata_CLASSWidgetENDCLASS = QtMocHelpers::str
     "on_buttonAtras_clicked",
     "on_buttonNextMonth_clicked",
     "interfazResposive",
-    "onAcceptButtonClicked"
+    "transforToDateTime"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSWidgetENDCLASS_t {
@@ -71,7 +71,7 @@ struct qt_meta_stringdata_CLASSWidgetENDCLASS_t {
     char stringdata11[23];
     char stringdata12[27];
     char stringdata13[18];
-    char stringdata14[22];
+    char stringdata14[19];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSWidgetENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -91,7 +91,7 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSWidgetENDCLASS_t qt_meta_string
         QT_MOC_LITERAL(138, 22),  // "on_buttonAtras_clicked"
         QT_MOC_LITERAL(161, 26),  // "on_buttonNextMonth_clicked"
         QT_MOC_LITERAL(188, 17),  // "interfazResposive"
-        QT_MOC_LITERAL(206, 21)   // "onAcceptButtonClicked"
+        QT_MOC_LITERAL(206, 18)   // "transforToDateTime"
     },
     "Widget",
     "on_crearEvento_clicked",
@@ -107,7 +107,7 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSWidgetENDCLASS_t qt_meta_string
     "on_buttonAtras_clicked",
     "on_buttonNextMonth_clicked",
     "interfazResposive",
-    "onAcceptButtonClicked"
+    "transforToDateTime"
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -135,7 +135,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSWidgetENDCLASS[] = {
       11,    0,   81,    2, 0x08,   10 /* Private */,
       12,    0,   82,    2, 0x08,   11 /* Private */,
       13,    0,   83,    2, 0x08,   12 /* Private */,
-      14,    0,   84,    2, 0x08,   13 /* Private */,
+      14,    6,   84,    2, 0x08,   13 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -146,7 +146,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSWidgetENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void,
+    QMetaType::QDateTime, QMetaType::Int, QMetaType::Int, QMetaType::Int, QMetaType::Int, QMetaType::Int, QMetaType::Int,    2,    2,    2,    2,    2,    2,
 
        0        // eod
 };
@@ -180,8 +180,14 @@ Q_CONSTINIT const QMetaObject Widget::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'interfazResposive'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'onAcceptButtonClicked'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>
+        // method 'transforToDateTime'
+        QtPrivate::TypeAndForceComplete<QDateTime, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>
     >,
     nullptr
 } };
@@ -200,7 +206,8 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 5: _t->on_buttonAtras_clicked(); break;
         case 6: _t->on_buttonNextMonth_clicked(); break;
         case 7: _t->interfazResposive(); break;
-        case 8: _t->onAcceptButtonClicked(); break;
+        case 8: { QDateTime _r = _t->transforToDateTime((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[5])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[6])));
+            if (_a[0]) *reinterpret_cast< QDateTime*>(_a[0]) = std::move(_r); }  break;
         default: ;
         }
     }

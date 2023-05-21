@@ -129,9 +129,9 @@ public:
         buttonExit = new QPushButton(frame);
         buttonExit->setObjectName("buttonExit");
         buttonExit->setGeometry(QRect(20, 530, 80, 24));
-        TableBase = new QTableView(frame);
+        TableBase = new QTableView(Widget);
         TableBase->setObjectName("TableBase");
-        TableBase->setGeometry(QRect(10, 160, 256, 192));
+        TableBase->setGeometry(QRect(420, 390, 256, 192));
         QWidget::setTabOrder(tablecalendar, ButtonDeleteEvent);
         QWidget::setTabOrder(ButtonDeleteEvent, mesNow);
         QWidget::setTabOrder(mesNow, spinBoxAnio);
