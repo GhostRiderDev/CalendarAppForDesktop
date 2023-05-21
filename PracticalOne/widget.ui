@@ -271,10 +271,10 @@ font: 700 11pt &quot;Arial&quot;;</string>
   <widget class="QTableView" name="TableBase">
    <property name="geometry">
     <rect>
-     <x>420</x>
-     <y>390</y>
-     <width>256</width>
-     <height>192</height>
+     <x>310</x>
+     <y>380</y>
+     <width>831</width>
+     <height>161</height>
     </rect>
    </property>
   </widget>

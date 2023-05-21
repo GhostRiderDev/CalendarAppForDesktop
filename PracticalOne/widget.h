@@ -35,11 +35,13 @@ private slots:
     void on_buttonNextMonth_clicked();
     void interfazResposive();
     QDateTime transforToDateTime(int,int,int,int,int,int);
+    void openAndUpdateSQL();
+
 
 
 private:
-    void populateDatabase(QString nombreEvento,QDateTime fechaTimeBegin, QDateTime fechaTimeEnd);
-    void insertPerson(const QString , QDateTime, QDateTime)const;
+    void populateDatabase(QString nombreEvento,QDateTime fechaTimeBegin, QDateTime fechaTimeEnd, QString);
+    void insertEvent(const QString , QDateTime, QDateTime, const QString)const;
     Ui::Widget *ui;
     QSqlDatabase m_db;
     QSqlTableModel *m_model;

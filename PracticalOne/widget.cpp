@@ -20,19 +20,21 @@
 
 
 
+void Widget::openAndUpdateSQL(){
+    m_exists=QFileInfo("data.sqlite").exists();
+    m_db=QSqlDatabase::addDatabase("QSQLITE");
+    m_db.setDatabaseName("data.sqlite");
+    m_db.open();
+    m_model=new QSqlTableModel(this);
+    m_model->setTable("Evento");
+    m_model->select();
+    ui->TableBase->setModel(m_model);
+}
+
 QDateTime Widget::transforToDateTime(int day, int month, int year, int hh, int mm, int ss ){
-    //Hay que ver lo de AM o PM
-    // Crear una instancia de QDate con los valores de día, mes y año
-    QDate date(year, month, day);
-
-    // Crear una instancia de QTime con los valores de hora, minuto y segundo
-    QTime time(hh,mm, ss);
-
-    // Combinar la fecha y la hora para crear un QDateTime
-    QDateTime dateTime(date, time);
-
-    // Ajustar el desplazamiento horario (offset) según el valor de sHorario
-    //dateTime = dateTime.addSecs(sHorario * 3600);  // Convertir horas a segundos
+    QDate date(year, month, day);//unir fecha
+    QTime time(hh,mm, ss);//unir tiempo
+    QDateTime dateTime(date, time);//unir las anteriores
 
     return dateTime;
 
@@ -212,19 +214,7 @@ Widget::Widget(QWidget *parent)
 
     dateNow dateNow1;
     ui->setupUi(this);
-    m_exists=QFileInfo("data.sqlite").exists();
-    m_db=QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("data.sqlite");
-
-     m_db.open();
-
-
-    //populateDatabase("Primer", QDateTime::fromString("2023-10-17 07:59", "yyyy-MM-dd hh:mm"), QDateTime::fromString("2023-10-17 07:59", "yyyy-MM-dd hh:mm"));
-
-    m_model=new QSqlTableModel(this);
-    m_model->setTable("Evento");
-    m_model->select();
-    ui->TableBase->setModel(m_model);
+    openAndUpdateSQL();
 
     ui->ButtonDeleteEvent->setText("Eliminar\nEvento");
     ui->crearEvento->setText("Agregar\nEvento");
@@ -316,12 +306,15 @@ void Widget::on_crearEvento_clicked()
 
 
     QHBoxLayout dateBeginEventLayout;
+    QLabel dateB("Inicio->", &dialog);
+    dateB.setStyleSheet("color: green; font-size: 20px; font-weight: bold;");
+    dateBeginEventLayout.addWidget(&dateB);
     // Campo de año
     QSpinBox yearSpinBox(&dialog);
     yearSpinBox.setRange(1, 99999);
     yearSpinBox.setValue(QDate::currentDate().year());
     QLabel yearLabel("Año:", &dialog);
-        dateBeginEventLayout.addWidget(&yearLabel);
+    dateBeginEventLayout.addWidget(&yearLabel);
     dateBeginEventLayout.addWidget(&yearSpinBox);
     int year = yearSpinBox.value();
 
@@ -344,9 +337,34 @@ void Widget::on_crearEvento_clicked()
     // Campo de día
     QSpinBox daySpinBox(&dialog);
     daySpinBox.setRange(1,31);
+    daySpinBox.setValue(QDate::currentDate().day());
     QLabel dayLabel("Día:", &dialog);
-        dateBeginEventLayout.addWidget(&dayLabel);
+    dateBeginEventLayout.addWidget(&dayLabel);
     dateBeginEventLayout.addWidget(&daySpinBox);
+
+
+    // Campo de hora
+
+    QSpinBox hourSpinBox(&dialog);
+    hourSpinBox.setRange(0, 23);
+    hourSpinBox.setValue(QTime::currentTime().hour());
+    QLabel hourLabel("Hora:", &dialog);
+    hourLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    hourSpinBox.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    dateBeginEventLayout.addWidget(&hourLabel);
+    dateBeginEventLayout.addWidget(&hourSpinBox);
+
+
+    // Campo de minutos
+    QSpinBox minuteSpinBox(&dialog);
+    minuteSpinBox.setRange(0, 59);
+    minuteSpinBox.setValue(QTime::currentTime().minute());
+    QLabel minuteLabel("Min:", &dialog);
+
+    dateBeginEventLayout.addWidget(&minuteLabel);
+    dateBeginEventLayout.addWidget(&minuteSpinBox);
+
     layout.addLayout(&dateBeginEventLayout);
 
     // Conexión de señales
@@ -363,41 +381,87 @@ void Widget::on_crearEvento_clicked()
     });
 
 
-    // Campo de hora
-    QHBoxLayout hourLayout;
-    QSpinBox hourSpinBox(&dialog);
-    hourSpinBox.setRange(0, 12);
-    hourSpinBox.setValue(QTime::currentTime().hour());
-    QLabel hourLabel("Hora:", &dialog);
-    hourLayout.addWidget(&hourLabel);
-    hourLayout.addWidget(&hourSpinBox);
-    hourLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    hourSpinBox.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    //Layout de fin de evento
+
+    QHBoxLayout dateEndEventLayout;
+
+    QLabel dateE("Fin->", &dialog);
+    dateE.setStyleSheet("color: red; font-size: 20px; font-weight: bold");
+    dateEndEventLayout.addWidget(&dateE);
+    // Campo de año
+    QSpinBox yearSpinBoxE(&dialog);
+    yearSpinBoxE.setRange(1, 99999);
+    yearSpinBoxE.setValue(QDate::currentDate().year());
+    QLabel yearLabelE("Año:", &dialog);
+    dateEndEventLayout.addWidget(&yearLabelE);
+    dateEndEventLayout.addWidget(&yearSpinBoxE);
+    int yearE = yearSpinBoxE.value();
+
+
+
+
+    QComboBox monthComboBoxE(&dialog);
+    monthComboBoxE.addItems(monthList);
+    QLabel monthLabelE("Mes:", &dialog);
+    monthComboBoxE.setCurrentIndex(monthNow-1);
+    dateEndEventLayout.addWidget(&monthLabelE);
+    dateEndEventLayout.addWidget(&monthComboBoxE);
+    int monthE = monthComboBoxE.currentIndex();
+
+
+    // Campo de día
+    QSpinBox daySpinBoxE(&dialog);
+    daySpinBoxE.setRange(1,31);
+    daySpinBoxE.setValue(QDate::currentDate().day());
+    QLabel dayLabelE("Día:", &dialog);
+    dateEndEventLayout.addWidget(&dayLabelE);
+    dateEndEventLayout.addWidget(&daySpinBoxE);
+
+
+    //Hora y minutos
+    QSpinBox hourSpinBoxE(&dialog);
+    hourSpinBoxE.setRange(0, 23);
+
+    QLabel hourLabelE("Hora:", &dialog);
+    hourLabelE.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    hourSpinBoxE.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    dateEndEventLayout.addWidget(&hourLabelE);
+    dateEndEventLayout.addWidget(&hourSpinBoxE);
 
     // Campo de minutos
-    QSpinBox minuteSpinBox(&dialog);
-    minuteSpinBox.setRange(0, 59);
-    minuteSpinBox.setValue(QTime::currentTime().minute());
-    QLabel minuteLabel("Minutos:", &dialog);
-    hourLayout.addWidget(&minuteLabel);
-    hourLayout.addWidget(&minuteSpinBox);
+    QSpinBox minuteSpinBoxE(&dialog);
+    minuteSpinBoxE.setRange(0, 59);
+    if((QTime::currentTime().minute())<30){
+        minuteSpinBoxE.setValue((QTime::currentTime().minute())+30);
+        hourSpinBoxE.setValue(QTime::currentTime().hour());
+    }else{
+        minuteSpinBoxE.setValue(60-(QTime::currentTime().minute()));
+        hourSpinBoxE.setValue((QTime::currentTime().hour())+1);
+    }
 
-    QCheckBox *checkAm = new QCheckBox(nullptr);
-    checkAm->setText("AM");
-    hourLayout.addWidget(checkAm);
-    checkAm->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QLabel minuteLabelE("Min:", &dialog);
 
-    QCheckBox *checkPm = new QCheckBox(nullptr);
-    checkPm->setText("PM");
-    hourLayout.addWidget(checkPm);
-    checkPm->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    dateEndEventLayout.addWidget(&minuteLabelE);
+    dateEndEventLayout.addWidget(&minuteSpinBoxE);
+    layout.addLayout(&dateEndEventLayout);
 
-    QButtonGroup *buttonGroup = new QButtonGroup(nullptr);
-    buttonGroup->addButton(checkAm);
-    buttonGroup->addButton(checkPm);
-    buttonGroup->setExclusive(true);
 
-    layout.addLayout(&hourLayout);
+
+
+    // Conexión de señales
+    QObject::connect(&yearSpinBoxE, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [&](int year) {
+        int month = monthComboBox.currentIndex() + 1;
+        int maxDays = QDate(year, month, 1).daysInMonth();
+        daySpinBox.setRange(1, maxDays);
+    });
+    QObject::connect(&monthComboBoxE, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [&](int index) {
+        int year = yearSpinBox.value();
+        int month = index + 1;
+        int maxDays = QDate(year, month, 1).daysInMonth();
+        daySpinBox.setRange(1, maxDays);
+    });
+
 
     // Campo de detalles del evento
     QLineEdit asunto(&dialog);
@@ -406,9 +470,6 @@ void Widget::on_crearEvento_clicked()
     asunto.setMinimumHeight(40); // Ajusta la altura mínima del QLineEdit
     layout.addWidget(&tex);
     layout.addWidget(&asunto);
-
-
-
 
 
     // Botones de aceptar y cancelar
@@ -441,14 +502,24 @@ void Widget::on_crearEvento_clicked()
         int month = monthComboBox.currentIndex() + 1; // Los índices comienzan en 0
         int year = yearSpinBox.value();
         int hour = hourSpinBox.value();
+        int min=minuteSpinBox.value();
+
+        int dayE=daySpinBoxE.value();
+        int monthE=monthComboBoxE.currentIndex()+1;
+        int yearE=yearSpinBoxE.value();
+        int hourE= hourSpinBoxE.value();
+        int minE=minuteSpinBoxE.value();
         QString nombreEvento = evento.text();
 
-        QDateTime d1=transforToDateTime(day, month, year, hour, 45, 23);
-        QDateTime d2=transforToDateTime(day+1, month+2, year, hour, 45, 23);
+        QString description=asunto.text();
 
+        QDateTime d1=transforToDateTime(day, month, year, hour, min, 0);
+        QDateTime d2=transforToDateTime(dayE, monthE, yearE, hourE, minE, 0);
 
+        populateDatabase(nombreEvento, d1, d2, description);
 
-        populateDatabase(nombreEvento, d1, d2);
+        openAndUpdateSQL();
+
     }
 }
 
@@ -512,25 +583,26 @@ void Widget::on_buttonNextMonth_clicked()
     }
 }
 
-void Widget::populateDatabase(QString nombreEvento,QDateTime fechaTimeBegin, QDateTime fechaTimeEnd){
+void Widget::populateDatabase(QString nombreEvento,QDateTime fechaTimeBegin, QDateTime fechaTimeEnd, QString description){
     if(m_exists==false){
-        QString sql="create table if not exists Evento(id integer primary key autoincrement, nombreEvento text, fechaTimeBegin DATETIME, fechaTimeEnd DATETIME)";
+        QString sql="create table if not exists Evento(id integer primary key autoincrement, nombreEvento text, fechaTimeBegin DATETIME, fechaTimeEnd DATETIME, description text)";
         QSqlQuery query;
         query.prepare(sql);
         query.exec();
 
     }
 
-    insertPerson(nombreEvento, fechaTimeBegin , fechaTimeEnd);
+    insertEvent(nombreEvento, fechaTimeBegin , fechaTimeEnd, description);
 }
 
-void Widget::insertPerson(const QString nombreEvento, QDateTime fechaTimeBegin, QDateTime fechaTimeEnd)const{
-    QString sql="insert into Evento(nombreEvento, fechaTimeBegin, fechaTimeEnd) values(?,?,?)";
+void Widget::insertEvent(const QString nombreEvento, QDateTime fechaTimeBegin, QDateTime fechaTimeEnd, const QString description)const{
+    QString sql="insert into Evento(nombreEvento, fechaTimeBegin, fechaTimeEnd, description) values(?,?,?,?)";
     QSqlQuery query;
     query.prepare(sql);
     query.addBindValue(nombreEvento);
     query.addBindValue(fechaTimeBegin);
     query.addBindValue(fechaTimeEnd);
+    query.addBindValue(description);
     query.exec();
 }
 

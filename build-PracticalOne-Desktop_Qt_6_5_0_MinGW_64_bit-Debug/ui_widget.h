@@ -131,7 +131,7 @@ public:
         buttonExit->setGeometry(QRect(20, 530, 80, 24));
         TableBase = new QTableView(Widget);
         TableBase->setObjectName("TableBase");
-        TableBase->setGeometry(QRect(420, 390, 256, 192));
+        TableBase->setGeometry(QRect(310, 380, 831, 161));
         QWidget::setTabOrder(tablecalendar, ButtonDeleteEvent);
         QWidget::setTabOrder(ButtonDeleteEvent, mesNow);
         QWidget::setTabOrder(mesNow, spinBoxAnio);
